@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Define the model for Product
+model Product {
+  id            Int          @id @default(autoincrement())
+  name          String
+  description   String?
+  price         Float
+  category      ProductCategory @default(OTHER)
+  medications   Medication[] @relation(name: "ProductMedication")
+  createdAt     DateTime?     @default(now())
+  updatedAt     DateTime?     @updatedAt
+}
+
+// Define an enum for Product Category
+enum ProductCategory {
+  MEDICINE
+  WELLNESS
+  EQUIPMENT
+  OTHER
+}
+
+// Define the model for Medication
+model Medication {
+  id            Int          @id @default(autoincrement())
+  name          String
+  products      Product[]    @relation(name: "ProductMedication")
+  supplier      Supplier     @relation(fields: [supplierId], references: [id])
+  supplierId    Int
+  dosage        String?
+  sideEffects   String?
+  prescriptionRequired Boolean @default(false)
+  createdAt     DateTime?     @default(now())
+  updatedAt     DateTime?     @updatedAt
+}
+
+// Define the model for Supplier
+model Supplier {
+  id            Int          @id @default(autoincrement())
+  name          String
+  medications   Medication[]
+  contactInfo   String?
+  createdAt     DateTime?     @default(now())
+  updatedAt     DateTime?     @updatedAt
+}
