@@ -1,11 +1,11 @@
-import { Medication, ProductCategory } from '@prisma/client';
+import { Medication, ProductCategory } from "@prisma/client";
 import {
   IsArray,
   IsDateString,
   IsEnum,
   IsNumber,
   IsString,
-} from 'class-validator';
+} from "class-validator";
 
 // src/recipes/dto/create-recipe.dto.ts
 export class CreateProductsDto {

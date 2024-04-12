@@ -1,8 +1,8 @@
 // src/main.ts
 
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestFactory } from "@nestjs/core";
+import { AppModule } from "./app.module";
+import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 
 // Define the bootstrap function
 async function bootstrap() {
@@ -11,16 +11,16 @@ async function bootstrap() {
 
   // Use DocumentBuilder to create a new Swagger document configuration
   const config = new DocumentBuilder()
-    .setTitle('Jentz Pharma API') // Set the title of the API
-    .setDescription('An api for pharma') // Set the description of the API
-    .setVersion('0.1') // Set the version of the API
+    .setTitle("Jentz Pharma API") // Set the title of the API
+    .setDescription("An api for pharma") // Set the description of the API
+    .setVersion("0.1") // Set the version of the API
     .build(); // Build the document
 
   // Create a Swagger document using the application instance and the document configuration
   const document = SwaggerModule.createDocument(app, config);
 
   // Setup Swagger module with the application instance and the Swagger document
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup("api", app, document);
 
   // Start the application and listen for requests on port 3000
   await app.listen(3000);
