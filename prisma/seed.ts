@@ -22,8 +22,8 @@ async function main() {
       category: "MEDICINE",
       medications: {
         create: {
-          name: "Aspirin Tablets",
-          dosage: "100mg per tablet",
+          name: "Aspirin",
+          dosage: "Take 1 to 2 tablets every 4 hours",
           sideEffects: "Nausea, vomiting, stomach pain",
           prescriptionRequired: false,
           supplierId: supplier.id,
