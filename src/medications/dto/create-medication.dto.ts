@@ -1,31 +1,36 @@
-import { Product, Supplier } from "@prisma/client";
+import { Supplier } from "@prisma/client";
+import { ApiProperty } from "@nestjs/swagger";
 import {
-  IsArray,
   IsBoolean,
   IsDateString,
   IsNumber,
   IsObject,
   IsString,
-  isDateString,
 } from "class-validator";
 
 export class CreateMedicationDto {
   @IsString()
+  @ApiProperty()
   name: string;
-  @IsArray()
-  products: Product[];
   @IsObject()
+  @ApiProperty()
   supplier: Supplier;
   @IsNumber()
+  @ApiProperty()
   supplierId: number;
   @IsString()
+  @ApiProperty()
   dosage?: string;
   @IsString()
+  @ApiProperty()
   sideEffects?: string;
   @IsBoolean()
+  @ApiProperty()
   prescriptionRequired: boolean;
   @IsDateString()
+  @ApiProperty()
   createdAt?: Date;
   @IsDateString()
+  @ApiProperty()
   updatedAt?: Date;
 }
