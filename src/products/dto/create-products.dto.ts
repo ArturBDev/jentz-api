@@ -1,3 +1,4 @@
+import { ApiProperty } from "@nestjs/swagger";
 import { Medication, ProductCategory } from "@prisma/client";
 import {
   IsArray,
@@ -10,23 +11,30 @@ import {
 // src/recipes/dto/create-recipe.dto.ts
 export class CreateProductsDto {
   @IsString()
+  @ApiProperty()
   name: string;
 
   @IsString()
+  @ApiProperty()
   description?: string;
 
   @IsNumber()
+  @ApiProperty()
   price: number;
 
   @IsArray()
-  medications: Medication[];
+  @ApiProperty()
+  medications?: Medication[];
 
   @IsEnum(ProductCategory)
+  @ApiProperty()
   category: ProductCategory;
 
   @IsDateString()
+  @ApiProperty()
   createdAt?: Date;
 
   @IsDateString()
+  @ApiProperty()
   updatedAt?: Date;
 }

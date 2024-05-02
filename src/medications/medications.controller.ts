@@ -14,9 +14,11 @@ import {
   ApiBadRequestResponse,
   ApiOkResponse,
   ApiResponse,
+  ApiTags,
 } from "@nestjs/swagger";
 import { Medication } from "@prisma/client";
 
+@ApiTags("medications")
 @Controller("medications")
 export class MedicationsController {
   constructor(private readonly medicationsService: MedicationsService) {}
@@ -65,7 +67,6 @@ export class MedicationsController {
   }
 
   @Delete(":id")
-  @ApiResponse({ status: 200, type: CreateMedicationDto })
   @ApiOkResponse({ description: "Medication deleted successfully" })
   @ApiBadRequestResponse({
     description: "An error occurred deleting medication",
