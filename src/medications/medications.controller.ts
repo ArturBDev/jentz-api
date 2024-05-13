@@ -17,6 +17,7 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { Medication } from "@prisma/client";
+import { Medication as MedicationViewModel } from "./entities/medication.entity";
 
 @ApiTags("medications")
 @Controller("medications")
@@ -24,9 +25,14 @@ export class MedicationsController {
   constructor(private readonly medicationsService: MedicationsService) {}
 
   @Post()
-  @ApiResponse({ status: 200, type: CreateMedicationDto })
-  @ApiOkResponse({ description: "Medication created successfully" })
-  @ApiBadRequestResponse({ description: "An error occurred" })
+  @ApiResponse({
+    status: 200,
+    type: CreateMedicationDto,
+    description: "Medication created successfully",
+  })
+  @ApiBadRequestResponse({
+    description: "An error occurred creating medication",
+  })
   create(
     @Body() createMedicationDto: CreateMedicationDto
   ): Promise<Medication> {
@@ -34,18 +40,22 @@ export class MedicationsController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, type: [CreateMedicationDto] })
-  @ApiOkResponse({ description: "Medications retrieved successfully" })
-  @ApiBadRequestResponse({
-    description: "An error occurred getting medications",
+  @ApiResponse({
+    status: 200,
+    type: MedicationViewModel,
+    isArray: true,
+    description: "Medications retrieved successfully",
   })
   findAll(): Promise<Medication[]> {
     return this.medicationsService.findAll();
   }
 
   @Get(":id")
-  @ApiResponse({ status: 200, type: CreateMedicationDto })
-  @ApiOkResponse({ description: "Medication retrieved successfully" })
+  @ApiResponse({
+    status: 200,
+    type: MedicationViewModel,
+    description: "Medication retrieved successfully",
+  })
   @ApiBadRequestResponse({
     description: "An error occurred getting medication",
   })
@@ -54,8 +64,11 @@ export class MedicationsController {
   }
 
   @Patch(":id")
-  @ApiResponse({ status: 200, type: UpdateMedicationDto })
-  @ApiOkResponse({ description: "Medication updated successfully" })
+  @ApiResponse({
+    status: 200,
+    type: UpdateMedicationDto,
+    description: "Medication updated successfully",
+  })
   @ApiBadRequestResponse({
     description: "An error occurred updating medications",
   })

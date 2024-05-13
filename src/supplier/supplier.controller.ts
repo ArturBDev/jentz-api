@@ -36,10 +36,6 @@ export class SupplierController {
 
   @Get()
   @ApiResponse({ status: 200, type: Supplier, isArray: true })
-  @ApiBadRequestResponse({
-    status: 400,
-    description: "An error occurred fetching suppliers",
-  })
   findAll(): Promise<Supplier[]> {
     return this.supplierService.findAll();
   }

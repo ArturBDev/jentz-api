@@ -37,10 +37,6 @@ export class ProductsController {
 
   @Get()
   @ApiResponse({ status: 200, type: Products, isArray: true })
-  @ApiBadRequestResponse({
-    status: 400,
-    description: "An error occurred fetching products",
-  })
   findAll(): Promise<Products[]> {
     return this.productsService.findAll();
   }
