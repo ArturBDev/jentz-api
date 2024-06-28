@@ -1,67 +1,69 @@
-// prisma/seed.ts
 import { PrismaClient } from "@prisma/client";
 
-// initialize Prisma Client
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create a supplier
-  const supplier = await prisma.supplier.create({
-    data: {
-      name: "Pharmaceuticals Inc.",
-      contactInfo: "info@pharmainc.com",
-    },
-  });
+  // Seed Medication
+  const medications = await Promise.all(
+    [...Array(5)].map((_, i) =>
+      prisma.medication.create({
+        data: {
+          name: `Medication ${i + 1}`,
+          dosage: `Dosage ${i + 1}`,
+          sideEffects: `Side Effects ${i + 1}`,
+          prescriptionRequired: i % 2 === 0,
+        },
+      })
+    )
+  );
 
-  // Create products and link to medications
-  const product1 = await prisma.product.create({
-    data: {
-      name: "Aspirin",
-      description: "Used to reduce fever and relieve mild to moderate pain",
-      price: 19.99,
-      category: "MEDICINE",
-      medications: {
-        create: {
-          name: "Aspirin",
-          dosage: "Take 1 to 2 tablets every 4 hours",
-          sideEffects: "Nausea, vomiting, stomach pain",
-          prescriptionRequired: false,
+  // Seed Suppliers
+  const suppliers = await Promise.all(
+    [...Array(5)].map((_, i) =>
+      prisma.supplier.create({
+        data: {
+          name: `Supplier ${i + 1}`,
+          contactInfo: `Contact Info ${i + 1}`,
+        },
+      })
+    )
+  );
+
+  // Seed Products
+  const products = await Promise.all(
+    medications.map((medication, i) =>
+      prisma.product.create({
+        data: {
+          name: `Product ${i + 1}`,
+          description: `Description ${i + 1}`,
+          price: 10.0 * (i + 1),
+          medicationId: medication.id,
+          category: "MEDICINE",
+        },
+      })
+    )
+  );
+
+  // Seed MedicationSupplier with a many-to-many relationship
+  for (const medication of medications) {
+    for (const supplier of suppliers) {
+      await prisma.medicationSupplier.create({
+        data: {
+          medicationId: medication.id,
           supplierId: supplier.id,
         },
-      },
-    },
-  });
+      });
+    }
+  }
 
-  const product2 = await prisma.product.create({
-    data: {
-      name: "Albuterol Inhaler",
-      description:
-        "Used to treat or prevent bronchospasm in people with reversible obstructive airway disease",
-      price: 34.95,
-      category: "MEDICINE",
-      medications: {
-        create: {
-          name: "Albuterol Sulfate",
-          dosage: "Use two inhalations every 4 to 6 hours",
-          sideEffects:
-            "Nervousness, shaking, headache, mouth/throat dryness or irritation",
-          prescriptionRequired: true,
-          supplierId: supplier.id,
-        },
-      },
-    },
-  });
-
-  console.log({ supplier, product1, product2 });
+  console.log("Seeding completed.");
 }
 
-// execute the main function
 main()
   .catch((e) => {
     console.error(e);
     process.exit(1);
   })
   .finally(async () => {
-    // close Prisma Client at the end
     await prisma.$disconnect();
   });

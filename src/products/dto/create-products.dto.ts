@@ -37,4 +37,8 @@ export class CreateProductsDto {
   @IsDateString()
   @ApiProperty()
   updatedAt?: Date;
+
+  @IsNumber()
+  @ApiProperty()
+  medicationId: number;
 }

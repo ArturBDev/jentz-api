@@ -13,12 +13,10 @@ export class ProductsService {
         name: createProductsDto.name,
         description: createProductsDto.description,
         price: createProductsDto.price,
-        medications: {
-          create: createProductsDto.medications,
-        },
         category: createProductsDto.category,
         createdAt: new Date(),
         updatedAt: new Date(),
+        medicationId: createProductsDto.medicationId,
       },
     });
   }
@@ -41,10 +39,8 @@ export class ProductsService {
         description: updateProductDto.description,
         price: updateProductDto.price,
         category: updateProductDto.category,
-        medications: {
-          create: updateProductDto.medications,
-        },
         updatedAt: new Date(),
+        medicationId: updateProductDto.medicationId,
       },
     });
   }

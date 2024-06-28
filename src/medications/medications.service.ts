@@ -13,10 +13,14 @@ export class MedicationsService {
         dosage: createMedicationDto.dosage,
         sideEffects: createMedicationDto.sideEffects,
         prescriptionRequired: createMedicationDto.prescriptionRequired,
-        supplier: {
-          connect: { id: createMedicationDto.supplierId },
-        },
         createdAt: new Date(),
+        medicationSuppliers: {
+          create: {
+            supplier: {
+              connect: { id: createMedicationDto.supplierId },
+            },
+          },
+        },
       },
     });
   }
@@ -39,10 +43,23 @@ export class MedicationsService {
         dosage: updateMedicationDto.dosage,
         sideEffects: updateMedicationDto.sideEffects,
         prescriptionRequired: updateMedicationDto.prescriptionRequired,
-        supplier: {
-          connect: { id: updateMedicationDto.supplierId },
-        },
+
         updatedAt: new Date(),
+        medicationSuppliers: {
+          update: {
+            where: {
+              medicationId_supplierId: {
+                medicationId: id,
+                supplierId: 0,
+              },
+            },
+            data: {
+              supplier: {
+                connect: { id: updateMedicationDto.supplierId },
+              },
+            },
+          },
+        },
       },
     });
   }
