@@ -1,23 +1,23 @@
-import { config } from 'dotenv'
-import { EnvironmentSecrets } from './types'
+import { config } from "dotenv";
+import { EnvironmentSecrets } from "./types";
 
-const envConfig = config().parsed
+const envConfig = config().parsed;
 
 if (!envConfig) {
-  console.warn('No .env file found')
+  console.warn("No .env file found");
 }
 
 const rawProcessEnv = {
   ...process.env,
-  ...envConfig
-}
+  ...envConfig,
+};
 
 const parsedProcessEnv = EnvironmentSecrets.safeParse({
-  ...rawProcessEnv
-})
+  ...rawProcessEnv,
+});
 
 if (!parsedProcessEnv.success) {
-  throw new Error(parsedProcessEnv.error.message)
+  throw new Error(parsedProcessEnv.error.message);
 }
 
-export const effectiveProcessEnv = parsedProcessEnv.data
+export const effectiveProcessEnv = parsedProcessEnv.data;
