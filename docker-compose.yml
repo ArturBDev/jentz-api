@@ -1,6 +1,4 @@
 # docker-compose.yml
-
-version: "3.8"
 services:
   postgres:
     image: postgres:13.5
@@ -12,17 +10,19 @@ services:
       - postgres:/var/lib/postgresql/data
     ports:
       - "5444:5432"
-    networks:
-      - jentz-network
   adminer:
     image: adminer
     restart: always
     ports:
       - 7575:8080
-    networks:
-      - jentz-network
+  api:
+    build: .
+    restart: always
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+    environment:
+      - DATABASE_URL=postgresql://recipe:RecipePassword@postgres:5432/recipe
 volumes:
   postgres:
-
-networks:
-  jentz-network:

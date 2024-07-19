@@ -1,14 +1,14 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { INestApplication } from "@nestjs/common";
 import * as request from "supertest";
-import { AppModule } from "./../src/app.module";
+import { JentzApiModule } from "../src/jentz-api.module";
 
-describe("AppController (e2e)", () => {
+describe("JentzApiController (e2e)", () => {
   let app: INestApplication;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [JentzApiModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();

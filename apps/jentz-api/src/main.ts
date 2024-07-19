@@ -8,6 +8,7 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 async function bootstrap() {
   // Create a NestJS application instance by passing the AppModule to the NestFactory
   const app = await NestFactory.create(AppModule);
+  app.enableCors(); // Enable CORS
 
   // Use DocumentBuilder to create a new Swagger document configuration
   const config = new DocumentBuilder()
@@ -23,7 +24,7 @@ async function bootstrap() {
   SwaggerModule.setup("api", app, document);
 
   // Start the application and listen for requests on port 3000
-  await app.listen(3000);
+  await app.listen(3001);
 }
 
 // Call the bootstrap function to start the application

@@ -33,4 +33,7 @@ export class Medication {
   @IsDateString()
   @ApiProperty()
   updatedAt?: Date;
+  @IsNumber()
+  @ApiProperty()
+  medicationId: number;
 }
