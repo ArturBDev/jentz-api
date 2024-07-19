@@ -1,8 +1,32 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src",
+  "sourceRoot": "apps/jentz-api/src",
   "compilerOptions": {
-    "deleteOutDir": true
+    "deleteOutDir": true,
+    "webpack": false,
+    "tsConfigPath": "apps/jentz-api/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/jentz-api",
+  "projects": {
+    "infra": {
+      "type": "application",
+      "root": "apps/infra",
+      "entryFile": "infra",
+      "sourceRoot": "apps/infra/bin",
+      "compilerOptions": {
+        "tsConfigPath": "apps/infra/tsconfig.app.json"
+      }
+    },
+    "jentz-api": {
+      "type": "application",
+      "root": "apps/jentz-api",
+      "entryFile": "main",
+      "sourceRoot": "apps/jentz-api/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/jentz-api/tsconfig.app.json"
+      }
+    }
   }
 }
