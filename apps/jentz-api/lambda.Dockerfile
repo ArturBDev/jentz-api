@@ -2,8 +2,6 @@ FROM public.ecr.aws/lambda/nodejs:18
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-ENV DATABASE_URL "postgres://default:gRhE6lmO8IGy@ep-long-sky-a50e8loo.us-east-2.aws.neon.tech:5432/verceldb?sslmode=require"
-
 COPY tsconfig.build.json .
 COPY tsconfig.json .
 COPY package-lock.json .
