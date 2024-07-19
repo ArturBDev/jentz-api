@@ -4,7 +4,8 @@
   "sourceRoot": "apps/jentz-api/src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "webpack": false
+    "webpack": false,
+    "tsConfigPath": "apps/jentz-api/tsconfig.app.json"
   },
   "monorepo": true,
   "root": "apps/jentz-api",

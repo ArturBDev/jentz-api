@@ -14,6 +14,8 @@ export const Environments = z.array(Environment);
 
 export type Environments = z.infer<typeof Environments>;
 
-export const EnvironmentSecrets = z.object({});
+export const EnvironmentSecrets = z.object({
+  DATABASE_URL: z.string().min(1),
+});
 
 export type EnvironmentSecrets = z.infer<typeof EnvironmentSecrets>;

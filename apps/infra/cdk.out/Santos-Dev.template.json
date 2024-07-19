@@ -1,0 +1,400 @@
+{
+ "Resources": {
+  "apiC8550315": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Description": "API Gateway for jentz-api",
+    "Name": "Santos API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Resource"
+   }
+  },
+  "apiDeployment149F129419f617cb83f511e815ce95fa484c3a84": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "API Gateway for jentz-api",
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "DependsOn": [
+    "apiproxyANY149F44F4",
+    "apiproxyOPTIONSE501BCC4",
+    "apiproxy7D115E87",
+    "apiOPTIONS3ABD9177",
+    "apiA9E0BAD5"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Deployment/Resource"
+   }
+  },
+  "apiDeploymentStageprod896C8101": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "apiDeployment149F129419f617cb83f511e815ce95fa484c3a84"
+    },
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    },
+    "StageName": "prod"
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/DeploymentStage.prod/Resource"
+   }
+  },
+  "apiA9E0BAD5": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "apiC8550315",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "api",
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/Resource"
+   }
+  },
+  "apiOPTIONS3ABD9177": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "apiA9E0BAD5"
+    },
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/OPTIONS/Resource"
+   }
+  },
+  "apiproxy7D115E87": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "apiA9E0BAD5"
+    },
+    "PathPart": "{proxy+}",
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/{proxy+}/Resource"
+   }
+  },
+  "apiproxyOPTIONSE501BCC4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationResponses": [
+      {
+       "ResponseParameters": {
+        "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+        "method.response.header.Access-Control-Allow-Origin": "'*'",
+        "method.response.header.Access-Control-Allow-Methods": "'GET,POST,PUT,DELETE,OPTIONS'"
+       },
+       "StatusCode": "200"
+      }
+     ],
+     "RequestTemplates": {
+      "application/json": "{ statusCode: 200 }"
+     },
+     "Type": "MOCK"
+    },
+    "MethodResponses": [
+     {
+      "ResponseParameters": {
+       "method.response.header.Access-Control-Allow-Headers": true,
+       "method.response.header.Access-Control-Allow-Origin": true,
+       "method.response.header.Access-Control-Allow-Methods": true
+      },
+      "StatusCode": "200"
+     }
+    ],
+    "ResourceId": {
+     "Ref": "apiproxy7D115E87"
+    },
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/{proxy+}/OPTIONS/Resource"
+   }
+  },
+  "apiproxyANYApiPermissionSantosDevapiBDF6E7A7ANYapiproxyB473170E": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "JentzAPI56AF562B",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:590183924480:",
+       {
+        "Ref": "apiC8550315"
+       },
+       "/",
+       {
+        "Ref": "apiDeploymentStageprod896C8101"
+       },
+       "/*/api/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/{proxy+}/ANY/ApiPermission.SantosDevapiBDF6E7A7.ANY..api.{proxy+}"
+   }
+  },
+  "apiproxyANYApiPermissionTestSantosDevapiBDF6E7A7ANYapiproxyED71F5DD": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "JentzAPI56AF562B",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:aws:execute-api:us-east-2:590183924480:",
+       {
+        "Ref": "apiC8550315"
+       },
+       "/test-invoke-stage/*/api/*"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/{proxy+}/ANY/ApiPermission.Test.SantosDevapiBDF6E7A7.ANY..api.{proxy+}"
+   }
+  },
+  "apiproxyANY149F44F4": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "ApiKeyRequired": false,
+    "AuthorizationType": "NONE",
+    "HttpMethod": "ANY",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:aws:apigateway:us-east-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "JentzAPI56AF562B",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "apiproxy7D115E87"
+    },
+    "RestApiId": {
+     "Ref": "apiC8550315"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/api/Default/api/{proxy+}/ANY/Resource"
+   }
+  },
+  "JentzAPIServiceRole2B980428": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/JentzAPI/ServiceRole/Resource"
+   }
+  },
+  "JentzAPI56AF562B": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "ImageUri": {
+      "Fn::Sub": "590183924480.dkr.ecr.us-east-2.${AWS::URLSuffix}/cdk-hnb659fds-container-assets-590183924480-us-east-2:47ad592c40082b99cfa08493c437c7a3e289f76dcb9d6abd25f1376323a774a2"
+     }
+    },
+    "Environment": {
+     "Variables": {
+      "DATABASE_URL": "postgres://default:gRhE6lmO8IGy@ep-long-sky-a50e8loo.us-east-2.aws.neon.tech:5432/verceldb?sslmode=require"
+     }
+    },
+    "MemorySize": 256,
+    "PackageType": "Image",
+    "Role": {
+     "Fn::GetAtt": [
+      "JentzAPIServiceRole2B980428",
+      "Arn"
+     ]
+    },
+    "Timeout": 30
+   },
+   "DependsOn": [
+    "JentzAPIServiceRole2B980428"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/JentzAPI/Resource",
+    "aws:asset:path": "asset.47ad592c40082b99cfa08493c437c7a3e289f76dcb9d6abd25f1376323a774a2",
+    "aws:asset:dockerfile-path": "apps/jentz-api/lambda.Dockerfile",
+    "aws:asset:property": "Code.ImageUri"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PwU7DMBBEv6V3Z4GoEudChcQBgdIPqFxnCdvEduTdtIoi/zs2pmpOO/s8OxrX8LR9hnqjr1yZtq8GOsFyEG16ldBx0SN1WvCqZ1gaZNmNpF6/3U3ucRz8bNFJpqstRXSYWRHJ76dg8EXzffkPKvoD5ce3GRUV1aDtqdWwJPSFwRIzeaf23vQY3m1KfZuckcyS46ajIm1TVT+U+DSjQhOOmhmFYXW+yyS/QYOjZxIf5twv5sPPScZJ7lX/zPkv5Lp176icbxHO/HCpa9jC4+bMRFWYnJBFaMr8BUVtorlmAQAA"
+   },
+   "Metadata": {
+    "aws:cdk:path": "Santos-Dev/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "apiEndpoint9349E63C": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "apiC8550315"
+      },
+      ".execute-api.us-east-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "apiDeploymentStageprod896C8101"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}

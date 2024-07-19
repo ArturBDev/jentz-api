@@ -1,65 +1,156 @@
 {
   "version": "36.0.0",
   "artifacts": {
-    "InfraStack.assets": {
+    "Santos-Dev.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
-        "file": "InfraStack.assets.json",
+        "file": "Santos-Dev.assets.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
       }
     },
-    "InfraStack": {
+    "Santos-Dev": {
       "type": "aws:cloudformation:stack",
-      "environment": "aws://unknown-account/unknown-region",
+      "environment": "aws://590183924480/us-east-2",
       "properties": {
-        "templateFile": "InfraStack.template.json",
+        "templateFile": "Santos-Dev.template.json",
         "terminationProtection": false,
+        "tags": {
+          "environment": "dev",
+          "project": "Santos"
+        },
         "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/1329d284c29abb12e450565139b9d7488f2b734ee4dd9b84672362bb1c4193a5.json",
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::590183924480:role/cdk-hnb659fds-deploy-role-590183924480-us-east-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::590183924480:role/cdk-hnb659fds-cfn-exec-role-590183924480-us-east-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-590183924480-us-east-2/b17fa6ff05cf72b961a659d5501ac8a48a45ad72a02a3016be36be782baa2816.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
-          "InfraStack.assets"
+          "Santos-Dev.assets"
         ],
         "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-lookup-role-${AWS::AccountId}-${AWS::Region}",
+          "arn": "arn:${AWS::Partition}:iam::590183924480:role/cdk-hnb659fds-lookup-role-590183924480-us-east-2",
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         }
       },
       "dependencies": [
-        "InfraStack.assets"
+        "Santos-Dev.assets"
       ],
       "metadata": {
-        "/InfraStack/CDKMetadata/Default": [
+        "/Santos-Dev": [
+          {
+            "type": "aws:cdk:stack-tags",
+            "data": [
+              {
+                "Key": "environment",
+                "Value": "dev"
+              },
+              {
+                "Key": "project",
+                "Value": "Santos"
+              }
+            ]
+          }
+        ],
+        "/Santos-Dev/api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiC8550315"
+          }
+        ],
+        "/Santos-Dev/api/Deployment/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiDeployment149F129419f617cb83f511e815ce95fa484c3a84"
+          }
+        ],
+        "/Santos-Dev/api/DeploymentStage.prod/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiDeploymentStageprod896C8101"
+          }
+        ],
+        "/Santos-Dev/api/Endpoint": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiEndpoint9349E63C"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiA9E0BAD5"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiOPTIONS3ABD9177"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/{proxy+}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiproxy7D115E87"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/{proxy+}/OPTIONS/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiproxyOPTIONSE501BCC4"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/{proxy+}/ANY/ApiPermission.SantosDevapiBDF6E7A7.ANY..api.{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiproxyANYApiPermissionSantosDevapiBDF6E7A7ANYapiproxyB473170E"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/{proxy+}/ANY/ApiPermission.Test.SantosDevapiBDF6E7A7.ANY..api.{proxy+}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiproxyANYApiPermissionTestSantosDevapiBDF6E7A7ANYapiproxyED71F5DD"
+          }
+        ],
+        "/Santos-Dev/api/Default/api/{proxy+}/ANY/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "apiproxyANY149F44F4"
+          }
+        ],
+        "/Santos-Dev/JentzAPI/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "JentzAPIServiceRole2B980428"
+          }
+        ],
+        "/Santos-Dev/JentzAPI/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "JentzAPI56AF562B"
+          }
+        ],
+        "/Santos-Dev/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata"
           }
         ],
-        "/InfraStack/CDKMetadata/Condition": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CDKMetadataAvailable"
-          }
-        ],
-        "/InfraStack/BootstrapVersion": [
+        "/Santos-Dev/BootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BootstrapVersion"
           }
         ],
-        "/InfraStack/CheckBootstrapVersion": [
+        "/Santos-Dev/CheckBootstrapVersion": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CheckBootstrapVersion"
           }
         ]
       },
-      "displayName": "InfraStack"
+      "displayName": "Santos-Dev"
     },
     "Tree": {
       "type": "cdk:tree",

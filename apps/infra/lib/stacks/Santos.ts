@@ -11,6 +11,7 @@ import {
   DockerImageFunction,
   DockerImageCode,
 } from "aws-cdk-lib/aws-lambda";
+import { effectiveProcessEnv } from "../config";
 
 interface SantosStackProps extends StackProps {
   gitRoot: string;
@@ -20,7 +21,7 @@ interface SantosStackProps extends StackProps {
 }
 
 export class SantosStack extends Stack {
-  constructor(scope: App, id: string, props?: SantosStackProps) {
+  constructor(scope: App, id: string, props: SantosStackProps) {
     super(scope, id, props);
 
     const { gitRoot, platform, architecture, environmentName, env } = props;
@@ -40,9 +41,11 @@ export class SantosStack extends Stack {
       }),
       architecture,
       memorySize: 256,
-      reservedConcurrentExecutions: 10,
       initialPolicy: [],
       timeout: Duration.seconds(30),
+      environment: {
+        DATABASE_URL: effectiveProcessEnv.DATABASE_URL,
+      },
     });
 
     // API Gateway resource mappings
@@ -58,7 +61,7 @@ export class SantosStack extends Stack {
 
     const apiProxyResource = apiResource.addResource("{proxy+}");
     apiProxyResource.addMethod("ANY", apiIntegration, {
-      apiKeyRequired: true,
+      apiKeyRequired: false,
     });
   }
 }

@@ -1,0 +1,36 @@
+{
+  "version": "36.0.0",
+  "files": {
+    "b17fa6ff05cf72b961a659d5501ac8a48a45ad72a02a3016be36be782baa2816": {
+      "source": {
+        "path": "Santos-Dev.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "590183924480-us-east-2": {
+          "bucketName": "cdk-hnb659fds-assets-590183924480-us-east-2",
+          "objectKey": "b17fa6ff05cf72b961a659d5501ac8a48a45ad72a02a3016be36be782baa2816.json",
+          "region": "us-east-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::590183924480:role/cdk-hnb659fds-file-publishing-role-590183924480-us-east-2"
+        }
+      }
+    }
+  },
+  "dockerImages": {
+    "47ad592c40082b99cfa08493c437c7a3e289f76dcb9d6abd25f1376323a774a2": {
+      "source": {
+        "directory": "asset.47ad592c40082b99cfa08493c437c7a3e289f76dcb9d6abd25f1376323a774a2",
+        "dockerFile": "apps/jentz-api/lambda.Dockerfile",
+        "platform": "linux/arm64"
+      },
+      "destinations": {
+        "590183924480-us-east-2": {
+          "repositoryName": "cdk-hnb659fds-container-assets-590183924480-us-east-2",
+          "imageTag": "47ad592c40082b99cfa08493c437c7a3e289f76dcb9d6abd25f1376323a774a2",
+          "region": "us-east-2",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::590183924480:role/cdk-hnb659fds-image-publishing-role-590183924480-us-east-2"
+        }
+      }
+    }
+  }
+}
