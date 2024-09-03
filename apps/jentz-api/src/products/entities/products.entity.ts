@@ -33,4 +33,10 @@ export class Products {
   @IsDateString()
   @ApiProperty()
   updatedAt?: Date;
+  @IsString()
+  @ApiProperty()
+  leafletUrl?: string;
+  @IsString()
+  @ApiProperty()
+  productImageUrl?: string;
 }

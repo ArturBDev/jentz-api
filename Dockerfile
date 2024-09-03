@@ -1,6 +1,6 @@
 # ---- Base Node ----
     FROM node:22-bullseye  AS base
-    COPY package*.json package-lock.json ./
+    COPY package*.json yarn.lock ./
     
     # ---- Dependencies ----
     FROM base AS dependencies

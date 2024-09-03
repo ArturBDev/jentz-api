@@ -47,7 +47,7 @@ async function main() {
       // Update the product in the database
       await prisma.product.update({
         where: { id: parseInt(fileName.split(".")[0]) }, // Assuming the file name is the product ID
-        data: { leafletUrl },
+        data: { leafletUrl: fileName },
       });
 
       console.log(`Uploaded ${fileName} to ${leafletUrl}`);

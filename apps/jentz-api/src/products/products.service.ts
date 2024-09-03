@@ -17,6 +17,8 @@ export class ProductsService {
         createdAt: new Date(),
         updatedAt: new Date(),
         medicationId: createProductsDto.medicationId,
+        leafletUrl: createProductsDto.leafletUrl,
+        productImageUrl: createProductsDto.productImageUrl,
       },
     });
   }
@@ -41,6 +43,8 @@ export class ProductsService {
         category: updateProductDto.category,
         updatedAt: new Date(),
         medicationId: updateProductDto.medicationId,
+        leafletUrl: updateProductDto.leafletUrl,
+        productImageUrl: updateProductDto.productImageUrl,
       },
     });
   }

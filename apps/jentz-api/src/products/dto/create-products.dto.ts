@@ -41,4 +41,12 @@ export class CreateProductsDto {
   @IsNumber()
   @ApiProperty()
   medicationId: number;
+
+  @IsString()
+  @ApiProperty()
+  leafletUrl?: string;
+
+  @IsString()
+  @ApiProperty()
+  productImageUrl?: string;
 }
