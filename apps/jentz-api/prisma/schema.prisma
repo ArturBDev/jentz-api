@@ -8,15 +8,16 @@ datasource db {
 }
 
 model Product {
-  id           Int             @id @default(autoincrement())
-  name         String
-  description  String?
-  price        Float
-  medicationId Int
-  category     ProductCategory @default(OTHER)
-  medication   Medication      @relation(fields: [medicationId], references: [id])
-  createdAt    DateTime?       @default(now())
-  updatedAt    DateTime?       @updatedAt
+  id              Int             @id @default(autoincrement())
+  name            String
+  description     String?
+  price           Float
+  medicationId    Int
+  category        ProductCategory @default(OTHER)
+  medication      Medication      @relation(fields: [medicationId], references: [id])
+  createdAt       DateTime?       @default(now())
+  updatedAt       DateTime?       @updatedAt
+  productImageUrl String? // Nova coluna para o link da imagem
 }
 
 enum ProductCategory {

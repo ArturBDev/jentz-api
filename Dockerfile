@@ -4,16 +4,17 @@
     
     # ---- Dependencies ----
     FROM base AS dependencies
-    RUN npm install
+    RUN yarn install
     
     # ---- Copy Files/Build ----
     FROM dependencies AS build
     COPY . .
-    RUN npx prisma generate
-    RUN npm run build
+    RUN chmod +x ./node_modules/.bin/nest
+    RUN npx prisma generate --schema apps/jentz-api/prisma/schema.prisma
+    RUN yarn run build
     
     # Expose the port on which the app will run
     EXPOSE 3001
     
     # Start the server using the production build
-    CMD ["node", "dist/src/main.js"]
+    CMD ["node", "dist/jentz-api/src/main.js"]
