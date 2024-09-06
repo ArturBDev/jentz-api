@@ -6,6 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
+  UseFilters,
+  UsePipes,
+  ValidationPipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { MedicationsService } from "./medications.service";
 import { CreateMedicationDto } from "./dto/create-medication.dto";
@@ -18,9 +24,11 @@ import {
 } from "@nestjs/swagger";
 import { Medication } from "@prisma/client";
 import { Medication as MedicationViewModel } from "./entities/medication.entity";
+import { AllExceptionsFilter } from "../filters/all-exceptions.filter";
 
 @ApiTags("medications")
 @Controller("medications")
+@UseFilters(AllExceptionsFilter)
 export class MedicationsController {
   constructor(private readonly medicationsService: MedicationsService) {}
 
@@ -33,10 +41,18 @@ export class MedicationsController {
   @ApiBadRequestResponse({
     description: "An error occurred creating medication",
   })
-  create(
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(
     @Body() createMedicationDto: CreateMedicationDto
   ): Promise<Medication> {
-    return this.medicationsService.create(createMedicationDto);
+    try {
+      return await this.medicationsService.create(createMedicationDto);
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred creating medication",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Get()
@@ -46,8 +62,15 @@ export class MedicationsController {
     isArray: true,
     description: "Medications retrieved successfully",
   })
-  findAll(): Promise<Medication[]> {
-    return this.medicationsService.findAll();
+  async findAll(): Promise<Medication[]> {
+    try {
+      return await this.medicationsService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred retrieving medications",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Get(":id")
@@ -59,8 +82,15 @@ export class MedicationsController {
   @ApiBadRequestResponse({
     description: "An error occurred getting medication",
   })
-  findOne(@Param("id") id: string): Promise<Medication> {
-    return this.medicationsService.findOne(+id);
+  async findOne(@Param("id", ParseIntPipe) id: number): Promise<Medication> {
+    try {
+      return await this.medicationsService.findOne(id);
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred getting medication",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Patch(":id")
@@ -70,13 +100,21 @@ export class MedicationsController {
     description: "Medication updated successfully",
   })
   @ApiBadRequestResponse({
-    description: "An error occurred updating medications",
+    description: "An error occurred updating medication",
   })
-  update(
-    @Param("id") id: string,
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(
+    @Param("id", ParseIntPipe) id: number,
     @Body() updateMedicationDto: UpdateMedicationDto
   ): Promise<Medication> {
-    return this.medicationsService.update(+id, updateMedicationDto);
+    try {
+      return await this.medicationsService.update(id, updateMedicationDto);
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred updating medication",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Delete(":id")
@@ -84,7 +122,14 @@ export class MedicationsController {
   @ApiBadRequestResponse({
     description: "An error occurred deleting medication",
   })
-  remove(@Param("id") id: string) {
-    return this.medicationsService.remove(+id);
+  async remove(@Param("id", ParseIntPipe) id: number) {
+    try {
+      return await this.medicationsService.remove(id);
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred deleting medication",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 }

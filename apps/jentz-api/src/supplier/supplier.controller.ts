@@ -6,6 +6,11 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
+  HttpStatus,
+  UsePipes,
+  ValidationPipe,
+  ParseIntPipe,
 } from "@nestjs/common";
 import { SupplierService } from "./supplier.service";
 import { CreateSupplierDto } from "./dto/create-supplier.dto";
@@ -17,59 +22,137 @@ import {
   ApiTags,
 } from "@nestjs/swagger";
 import { Supplier } from "./entities/supplier.entity";
+
 @ApiTags("supplier")
 @Controller("supplier")
 export class SupplierController {
   constructor(private readonly supplierService: SupplierService) {}
 
   @Post()
-  @ApiResponse({ status: 200, type: CreateSupplierDto })
+  @ApiResponse({
+    status: 201,
+    type: Supplier,
+    description: "Supplier created successfully",
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: "An error occurred creating supplier",
   })
-  create(
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(
     @Body() createSupplierDto: CreateSupplierDto
-  ): Promise<CreateSupplierDto> {
-    return this.supplierService.create(createSupplierDto);
+  ): Promise<Supplier> {
+    try {
+      return await this.supplierService.create(createSupplierDto);
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred creating supplier",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Get()
-  @ApiResponse({ status: 200, type: Supplier, isArray: true })
-  findAll(): Promise<Supplier[]> {
-    return this.supplierService.findAll();
+  @ApiResponse({
+    status: 200,
+    type: Supplier,
+    isArray: true,
+    description: "Suppliers retrieved successfully",
+  })
+  async findAll(): Promise<Supplier[]> {
+    try {
+      return await this.supplierService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred retrieving suppliers",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
   }
 
   @Get(":id")
-  @ApiResponse({ status: 200, type: Supplier })
+  @ApiResponse({
+    status: 200,
+    type: Supplier,
+    description: "Supplier retrieved successfully",
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: "An error occurred fetching supplier",
   })
-  findOne(@Param("id") id: string): Promise<Supplier> {
-    return this.supplierService.findOne(+id);
+  async findOne(@Param("id", ParseIntPipe) id: number): Promise<Supplier> {
+    try {
+      const supplier = await this.supplierService.findOne(id);
+      if (!supplier) {
+        throw new HttpException(
+          `Supplier with ID ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+      }
+      return supplier;
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred fetching supplier",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Patch(":id")
-  @ApiResponse({ status: 200, type: UpdateSupplierDto })
+  @ApiResponse({
+    status: 200,
+    type: Supplier,
+    description: "Supplier updated successfully",
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: "An error occurred updating supplier",
   })
-  update(
-    @Param("id") id: string,
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(
+    @Param("id", ParseIntPipe) id: number,
     @Body() updateSupplierDto: UpdateSupplierDto
   ): Promise<Supplier> {
-    return this.supplierService.update(+id, updateSupplierDto);
+    try {
+      const supplier = await this.supplierService.update(id, updateSupplierDto);
+      if (!supplier) {
+        throw new HttpException(
+          `Supplier with ID ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+      }
+      return supplier;
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred updating supplier",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Delete(":id")
+  @ApiOkResponse({
+    status: 200,
+    description: "Supplier deleted successfully",
+  })
   @ApiBadRequestResponse({
     status: 400,
     description: "An error occurred deleting supplier",
   })
-  @ApiOkResponse({ description: "Supplier deleted successfully" })
-  remove(@Param("id") id: string) {
-    return this.supplierService.remove(+id);
+  async remove(@Param("id", ParseIntPipe) id: number): Promise<void> {
+    try {
+      const result = await this.supplierService.remove(id);
+      if (!result) {
+        throw new HttpException(
+          `Supplier with ID ${id} not found`,
+          HttpStatus.NOT_FOUND
+        );
+      }
+    } catch (error) {
+      throw new HttpException(
+        "An error occurred deleting supplier",
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 }
