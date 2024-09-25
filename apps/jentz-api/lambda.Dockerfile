@@ -9,7 +9,7 @@ COPY package.json .
 COPY nest-cli.json .
 COPY apps/jentz-api apps/jentz-api
 
-RUN yarn install
+RUN npm install -g yarn && yarn install && yarn cache clean
 RUN npx prisma generate --schema apps/jentz-api/prisma/schema.prisma
 RUN npx prisma migrate dev --schema=apps/jentz-api/prisma/schema.prisma
 RUN yarn run build jentz-api

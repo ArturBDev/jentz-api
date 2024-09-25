@@ -39,6 +39,8 @@ async function main() {
           price: 10.0 * (i + 1),
           medicationId: medication.id,
           category: "MEDICINE",
+          leafletUrl: `${i + 1}.pdf`,
+          productImageUrl: `${i + 1}.png`,
         },
       })
     )
