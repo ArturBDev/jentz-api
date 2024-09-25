@@ -8,8 +8,12 @@ import { SwaggerModule, DocumentBuilder } from "@nestjs/swagger";
 async function bootstrap() {
   // Create a NestJS application instance by passing the AppModule to the NestFactory
   const app = await NestFactory.create(AppModule);
-  app.enableCors(); // Enable CORS
-
+  // Enable CORS
+  app.enableCors({
+    origin: "*", // Replace '*' with specific domains if needed
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type, Accept, Authorization",
+  });
   // Use DocumentBuilder to create a new Swagger document configuration
   const config = new DocumentBuilder()
     .setTitle("Jentz Pharma API") // Set the title of the API
