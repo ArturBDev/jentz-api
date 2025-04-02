@@ -57,3 +57,19 @@ model MedicationSupplier {
 
   @@id([medicationId, supplierId])
 }
+
+enum Role {
+  USER
+  SUPPLIER
+  ADMIN
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

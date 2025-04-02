@@ -17,4 +17,4 @@
     EXPOSE 3001
     
     # Start the server using the production build
-    CMD ["node", "dist/jentz-api/src/main.js"]
+    CMD ["node", "dist/apps/jentz-api/main.js"]

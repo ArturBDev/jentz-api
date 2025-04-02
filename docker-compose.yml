@@ -1,4 +1,5 @@
 # docker-compose.yml
+
 services:
   postgres:
     image: postgres:13.5
@@ -6,23 +7,47 @@ services:
     environment:
       - POSTGRES_USER=recipe
       - POSTGRES_PASSWORD=RecipePassword
+      - POSTGRES_DB=recipe
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
       - "5444:5432"
+    networks:
+      - jentz-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U recipe"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   adminer:
     image: adminer
     restart: always
     ports:
-      - 7575:8080
+      - "7575:8080"
+    networks:
+      - jentz-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   api:
     build: .
     restart: always
     ports:
       - "3001:3001"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       - DATABASE_URL=postgresql://recipe:RecipePassword@postgres:5432/recipe
+      - NODE_ENV=development
+    networks:
+      - jentz-network
+
+networks:
+  jentz-network:
+    driver: bridge
+
 volumes:
   postgres:
